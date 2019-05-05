@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private HealthBar mHealthBar;
-    private HealthBar mFoodBar;
+    public HealthBar mHealthBar;
+    public HealthBar mFoodBar;
     private int startHealth;
     private int startFood;
 
     public float turnSpeed = 20f;
+    public HUD Hud;
 
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
     Animator m_Animator;
     Rigidbody m_Rigidbody;
-    GameObject Bars_Panel;
 
     // Start is called before the first frame update
     void Start()
     {
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
-
-        mHealthBar = Bars_Panel.transform.Find("Bars_Panel/HealthBar").GetComponent<HealthBar>();
         mHealthBar.Min = 0;
         mHealthBar.Max = Health;
         startHealth = Health;
         mHealthBar.SetValue(Health);
 
-        mFoodBar = Bars_Panel.transform.Find("Bars_Panel/FoodBar").GetComponent<HealthBar>();
         mFoodBar.Min = 0;
         mFoodBar.Max = Food;
         startFood = Food;
@@ -50,8 +47,11 @@ public class PlayerController : MonoBehaviour
     public void IncreaseHunger()
     {
         Food--;
-        if (Food < 0)
+        if (Food < 1)
+        {
+            Health--;
             Food = 0;
+        }
 
         mFoodBar.SetValue(Food);
 
